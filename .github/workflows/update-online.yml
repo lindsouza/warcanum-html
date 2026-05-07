@@ -1,9 +1,9 @@
 name: Atualizar players online
 
 on:
-  schedule:
-    - cron: "* * * * *"   # 1x por minuto
   workflow_dispatch:
+  schedule:
+    - cron: '*/1 * * * *'
 
 jobs:
   fetch-and-send:
@@ -29,3 +29,4 @@ jobs:
           port: 22022
           source: "online.html"
           target: "/home/kustebot_warcanum/data"
+          rm: true
