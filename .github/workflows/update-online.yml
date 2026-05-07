@@ -2,7 +2,7 @@ name: Atualizar players online
 
 on:
   schedule:
-    - cron: '* * * * *'   # roda a cada 1 minuto
+    - cron: "* * * * *"   # 1x por minuto
   workflow_dispatch:
 
 jobs:
@@ -10,14 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Baixar site a cada 20 segundos (3 vezes por minuto)
+      - name: Baixar site a cada 20 segundos
         run: |
           for i in 1 2 3; do
             echo "Execução $i - $(date)"
-            curl -L \
-              -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
-              -o online.html \
-              https://arcanum74.com/community/players-online
+            curl -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
+              https://arcanum74.com/community/players-online \
+              -o online.html
             sleep 20
           done
 
@@ -30,4 +29,3 @@ jobs:
           port: 22022
           source: "online.html"
           target: "/home/kustebot_warcanum/data"
-``
