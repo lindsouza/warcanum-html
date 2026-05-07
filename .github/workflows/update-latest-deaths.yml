@@ -2,7 +2,20 @@ name: Atualizar latest deaths
 
 on:
   schedule:
-    - cron: "* * * * *"   #               https://arcanum74.com/community/latest-deaths \    - cron: "* * * * *"   # 1x por minuto
+    - cron: "* * * * *"   # roda 1x por minuto
+  workflow_dispatch:
+
+jobs:
+  fetch-and-send:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar latest deaths a cada 20 segundos
+        run: |
+          for i in 1 2 3; do
+            echo "Execução $i - $(date)"
+            curl -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
+              https://arcanum74.com/community/latest-deaths \
               -o latest-deaths.html
             sleep 20
           done
@@ -16,15 +29,3 @@ on:
           port: 22022
           source: "latest-deaths.html"
           target: "/home/kustebot_warcanum/data"
-  workflow_dispatch:
-
-jobs:
-  fetch-and-send:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Baixar latest deaths a cada 20 segundos
-        run: |
-          for i in 1 2 3; do
-            echo "Execução $i - $(date)"
-            curl -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
