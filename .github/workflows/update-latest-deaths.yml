@@ -27,4 +27,3 @@ jobs:
           port: 22022
           source: "latest-deaths.html"
           target: "/home/kustebot_warcanum/data"
-          rm: true
