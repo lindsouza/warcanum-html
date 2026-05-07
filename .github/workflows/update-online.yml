@@ -3,22 +3,18 @@ name: Atualizar players online
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/1 * * * *'
+    - cron: '*/5 * * * *'   # ✅ a cada 5 minutos (limite do GitHub)
 
 jobs:
   fetch-and-send:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Baixar site a cada 20 segundos
+      - name: Baixar players online
         run: |
-          for i in 1 2 3; do
-            echo "Execução $i - $(date)"
-            curl -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
-              https://arcanum74.com/community/players-online \
-              -o online.html
-            sleep 20
-          done
+          curl -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
+            https://arcanum74.com/community/players-online \
+            -o online.html
 
       - name: Enviar para VPS
         uses: appleboy/scp-action@v0.1.7
