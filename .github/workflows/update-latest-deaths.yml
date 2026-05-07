@@ -1,24 +1,20 @@
 name: Atualizar latest deaths
 
 on:
-  schedule:
-    - cron: "* * * * *"   # roda 1x por minuto
   workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'   # ✅ a cada 5 minutos
 
 jobs:
   fetch-and-send:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Baixar latest deaths a cada 20 segundos
+      - name: Baixar latest deaths
         run: |
-          for i in 1 2 3; do
-            echo "Execução $i - $(date)"
-            curl -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
-              https://arcanum74.com/community/latest-deaths \
-              -o latest-deaths.html
-            sleep 20
-          done
+          curl -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
+            https://arcanum74.com/community/latest-deaths \
+            -o latest-deaths.html
 
       - name: Enviar para VPS
         uses: appleboy/scp-action@v0.1.7
@@ -29,3 +25,4 @@ jobs:
           port: 22022
           source: "latest-deaths.html"
           target: "/home/kustebot_warcanum/data"
+          rm: true
